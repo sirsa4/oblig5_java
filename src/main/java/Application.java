@@ -1,6 +1,7 @@
 import controller.EpisodeController;
 import controller.TvSerieController;
 import data.TvSerieDataRepository;
+import data.TvSerieJSONRepository;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
@@ -18,27 +19,21 @@ public class Application {
             config.vue.vueAppName = "app";
         }).start(3001);
 
-        //create a GET response to port 8080 root or home page
-        // home = /
-        // get() takes annon class created from an interface as 2nd argument
-        //we can override the handle() in Handler interface to send response to client
-        //here we are sending simple "Hello World!" text as response to request to home page.
+
         app.get("/", new VueComponent("hello-world"));
 
-        //oppgave 2.6 - vue component paths.
-        //This connects front-end(vue) with the backend(javalin here).
-        //this front end path is a response which returns list of TVseries
+
         app.get("/tvserie", new VueComponent("tvserie-overview"));
 
-        //this path retuns specific season number in specific TVSerie
-        //in oppgave 2.7 episodes path is working so Vue can fetch() episodes too correctly.
+
         app.get("/tvserie/{tvserie-id}/sesong/{sesong-nr}",new VueComponent("tvserie-detail"));
 
-        //api paths. Front-end takes data from these paths
-        // resource for controller logic is from lecture and Lars's github repo for prog2
-        TvSerieDataRepository data = new TvSerieDataRepository();
 
-        TvSerieController controller = new TvSerieController(data);
+        //oppgave 2.1 C
+        //tvserie controller uses now the json data repository to get data from from
+        TvSerieJSONRepository jsonData = new TvSerieJSONRepository("tvshows_10_with_roles.json");
+
+        TvSerieController controller = new TvSerieController(jsonData);
         app.get("/api/tvserie", new Handler() {
             @Override
             public void handle(@NotNull Context context) throws Exception {
@@ -57,14 +52,11 @@ public class Application {
             }
         });
 
-        //oppgave 2.7
 
-        //get all episodes API path
-        //instance of TVserieDataRepo
-        TvSerieDataRepository episodesData = new TvSerieDataRepository();
 
-        //instance of EpisodeController which can use the TVSerieDatarepository object using the interface in controller class constructor
-        EpisodeController episodeController = new EpisodeController(episodesData);
+        //Episode controller also using the json data repository to get data for episodes
+        EpisodeController episodeController = new EpisodeController(jsonData);
+
         app.get("/api/tvserie/{tvserie-id}/sesong/{sesong-id}", new Handler() {
             @Override
             public void handle(@NotNull Context context) throws Exception {
