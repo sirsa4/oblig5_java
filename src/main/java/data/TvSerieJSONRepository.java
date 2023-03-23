@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TvSerieJSONRepository implements TvSerieRepository {
-    ArrayList<TVSerie> tvSeries;
+    private ArrayList<TVSerie> tvSeries;
     public TvSerieJSONRepository(String filePath) {
 
         //oppgave 2.1 a
@@ -104,5 +104,16 @@ public class TvSerieJSONRepository implements TvSerieRepository {
         }
 
         return null;
+    }
+
+    //get and setter methods for episodes
+
+
+    public ArrayList<TVSerie> getTvSeries() {
+        return tvSeries;
+    }
+
+    public void setTvSeries(ArrayList<TVSerie> tvSeries) {
+        this.tvSeries = tvSeries;
     }
 }// end of class

@@ -1,5 +1,6 @@
 import controller.EpisodeController;
 import controller.TvSerieController;
+import data.TvSerieCSVRepository;
 import data.TvSerieDataRepository;
 import data.TvSerieJSONRepository;
 import io.javalin.Javalin;
@@ -32,8 +33,9 @@ public class Application {
         //oppgave 2.1 C
         //tvserie controller uses now the json data repository to get data from from
         TvSerieJSONRepository jsonData = new TvSerieJSONRepository("tvshows_10_with_roles.json");
+        TvSerieCSVRepository csvData = new TvSerieCSVRepository("tvshows_10.csv",";");
 
-        TvSerieController controller = new TvSerieController(jsonData);
+        TvSerieController controller = new TvSerieController(csvData);
         app.get("/api/tvserie", new Handler() {
             @Override
             public void handle(@NotNull Context context) throws Exception {
@@ -55,7 +57,7 @@ public class Application {
 
 
         //Episode controller also using the json data repository to get data for episodes
-        EpisodeController episodeController = new EpisodeController(jsonData);
+        EpisodeController episodeController = new EpisodeController(csvData);
 
         app.get("/api/tvserie/{tvserie-id}/sesong/{sesong-id}", new Handler() {
             @Override
@@ -79,6 +81,17 @@ public class Application {
         //This path uses the API path above this.
         app.get("tvserie/{tvserie-id}/sesong/{sesong-nr}/episode/{episode-nr}", new VueComponent("episode-detail"));
 
+        //create episode vue front-end path
+        app.get("create", new VueComponent("episode-create"));
+
+        //create episode API path
+        app.get("/api/tvserie/{tvserie-id}/createepisode", new Handler() {
+            @Override
+            public void handle(@NotNull Context context) throws Exception {
+                String serie = context.pathParam("tvserie-id");
+                System.out.println(context.body());
+            }
+        });
 
 
 

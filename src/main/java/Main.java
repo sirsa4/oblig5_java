@@ -1,4 +1,5 @@
 //model classes
+import data.TvSerieCSVRepository;
 import data.TvSerieDataRepository;
 import data.TvSerieJSONRepository;
 import data.TvSerieRepository;
@@ -62,7 +63,9 @@ public class Main {
 
         System.out.println("====================Oblig 5 Test==================");
 
-        TvSerieJSONRepository series = new TvSerieJSONRepository("tvshows_10_with_roles.json");
+      //  TvSerieJSONRepository series = new TvSerieJSONRepository("tvshows_10_with_roles.json");
+     //   TvSerieCSVRepository csvserie = new TvSerieCSVRepository("tvshows_10.csv",";");
+
 
 
      //main method end
