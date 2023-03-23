@@ -82,7 +82,7 @@ public class Application {
         app.get("tvserie/{tvserie-id}/sesong/{sesong-nr}/episode/{episode-nr}", new VueComponent("episode-detail"));
 
         //create episode vue front-end path
-        app.get("create", new VueComponent("episode-create"));
+        app.get("/tvserie/{tvserie-id}/createepisode", new VueComponent("episode-create"));
 
         //create episode API path
         app.get("/api/tvserie/{tvserie-id}/createepisode", new Handler() {

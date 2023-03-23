@@ -4,9 +4,7 @@ import model.Episode;
 import model.Person;
 import model.TVSerie;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,11 +50,18 @@ public class TvSerieCSVRepository implements TvSerieRepository {
 
                 // I struggled to get HashMap to work. So i got help from student and chatGPT that i needed to store TVSerie title in
                 //HashMap
+                //Here in first iteration of loop, the serieHash<title> is null. There is no value in it.
+                //"title" is the key. So it has corresponding value.
                 TVSerie serie = serieHash.get(title);
 
+                //When there is no value in "title", new TVserie object is created, also title with value is put() in serieHash
+                //this means as long serieHash<title> is in not empty/null, no duplicate of current <title> will be created this.
+                //this way below the if-block, episodes can be added to their correct TVSerie object
+                //
                 if (serie == null) {
+                    //create tvserie from current iteration
                     serie = new TVSerie(title,beskrivelse,LocalDate.parse(serieDato),serieBildeurl);
-                    //add serie to hashmap
+                    //add serie object as value to hashmap
                     serieHash.put(title, serie);
                     //add serie object to the ArrayList
                     serieCSV.add(serie);
@@ -74,13 +79,48 @@ public class TvSerieCSVRepository implements TvSerieRepository {
 
             } // while loop ends here
 
-
+            //oppgave 2.2-C not working well
+         //   writeToCSV(serieCSV,"mycsv.csv");
 
         }
         catch (IOException e){
             System.err.println(e.getMessage());
         }
 
+
+    } //end of constructor
+
+    /*
+                String epTitle = values[4];
+                String episodeBeskrivelse = values[5];
+                String episodeNr = values[6]; //usikker litt
+                String sesongNr = values[7]; //sesongNr
+                String spilleTid = values[8]; //spilleTid?
+                String episodeDato = values[9];
+                String episodeBildeurl = values[10];
+
+     */
+
+    //oppgave 2.2-C: write data from TVSerie ArrayList to csv file
+    public void writeToCSV(ArrayList<TVSerie> series, String filePath){
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
+
+            for(TVSerie serie : series){
+                //not done - add remaning data
+                writer.write(serie.getTitle()+ ";"+ serie.getBeskrivelse()+";"+ serie.getUtgivelsesdato()+ ";"+serie.getBildeUrl());
+                for(Episode ep : serie.getEpisoder()){
+                    writer.write(ep.getTitle()+";"+ep.getBeskrivelse()+";"+ep.getEpisodeNr()+";"+ep.getSesongNr()+";"+ep.getSpilletid()+";"+ep.getUtgivelsesdato()+";"+ep.getBildeUrl()+";"+ep.getRegissor().getFornavn()+";"+ep.getRegissor().getEtternavn()+";"+ep.getRegissor().getFodselsDato());
+
+                }
+                writer.newLine();
+            }
+
+
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 
