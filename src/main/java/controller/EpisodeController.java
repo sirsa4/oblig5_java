@@ -15,6 +15,16 @@ public class EpisodeController {
         this.episodeRepo = episodeRepo;
     }
 
+    //delete episode from TVserie
+    public void deleteEpisodeController(Context context){
+        String serie = context.pathParam("tvserie-id");
+        int sesong = Integer.parseInt(context.pathParam("sesong-nr"));
+        int episode = Integer.parseInt(context.pathParam("episode-nr"));
+
+        episodeRepo.deleteEpisode(serie,sesong,episode);
+        context.redirect("/tvserie/" + serie + "/sesong/" + sesong);
+    }
+
     //get all episodes in a given season
     public void getEpisodes(Context context){
         //get TVSerie name from browser url

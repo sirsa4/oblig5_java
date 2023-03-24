@@ -9,11 +9,10 @@ import java.util.ArrayList;
 public class TvSerieController {
     private TvSerieRepository repo;
 
-    //oppgave 2.6
+
     public TvSerieController(TvSerieRepository repo) {
         this.repo = repo;
     }
-
 
 
     //get all TVSerie: TVSerie ArrayList

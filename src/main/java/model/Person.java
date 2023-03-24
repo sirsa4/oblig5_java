@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 
 //oppgave2.4
@@ -45,6 +47,7 @@ public class Person {
     }
 
     //oppgave2.4 full name method
+    @JsonIgnore
     public String getFullName(){
         return this.fornavn+" "+this.etternavn;
     }

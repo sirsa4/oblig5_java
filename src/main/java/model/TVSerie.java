@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /*
 * samarbeidet med Mostafa Ali Haider
@@ -60,7 +61,29 @@ public class TVSerie implements Comparable<TVSerie> {
         this.bildeUrl = bildeUrl;
     }
 
-    //oblig 4: oppgave 2.8
+    //delete episode
+    public void deleteEpisodeInSeason(int sesongNr, int episodeNr){
+
+
+        //get correct tvserie
+       // episoder.removeIf(episode -> episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr);
+        for(Episode episode : episoder){
+            if(episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr){
+                episoder.remove(episode);
+            }
+        }
+
+       /* Iterator<Episode> iterator = episoder.iterator();
+        while (iterator.hasNext()) {
+            Episode episode = iterator.next();
+            if (episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr) {
+                iterator.remove();
+            }
+        }
+
+        */
+
+    }
 
 
     public String getBildeUrl() {

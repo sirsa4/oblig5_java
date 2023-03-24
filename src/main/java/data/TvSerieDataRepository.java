@@ -64,6 +64,24 @@ public class TvSerieDataRepository implements TvSerieRepository {
         series.add(theSimpsons);
 
     }
+
+    //oppgave 2.3 - a create, update, delete methods
+
+    @Override
+    public void createEpisode(String tvserie) {
+
+    }
+
+    @Override
+    public void updateEpisode(String tvserie, int sesongNr, int episodeNr) {
+
+    }
+
+    @Override
+    public void deleteEpisode(String tvserie, int sesongNr, int episodeNr) {
+
+    }
+
     //oppgave 2.5
     //method which gets single TVserie objects
     @Override

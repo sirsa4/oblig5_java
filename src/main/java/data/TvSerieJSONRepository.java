@@ -37,6 +37,42 @@ public class TvSerieJSONRepository implements TvSerieRepository {
             throw new RuntimeException(e);
         }
 
+       // writeToJson(tvSeries,"myjson.json");
+
+    }
+    //oppgave 2.3 - a create, update, delete methods
+    @Override
+    public void createEpisode(String tvserie) {
+
+    }
+
+    @Override
+    public void updateEpisode(String tvserie, int sesongNr, int episodeNr) {
+
+    }
+
+    @Override
+    public void deleteEpisode(String tvserie, int sesongNr, int episodeNr) {
+
+        //We already have from before a method which gets correct episode from tvserie in the correct season number
+        //to delete this episode, we need to get correct TVserie object and then correct season in episodes
+       Episode episodeToDelete = getEpisodeInSeason(tvserie,sesongNr,episodeNr);
+
+        System.out.println(episodeToDelete.getTitle() + ": sesong: "+ episodeToDelete.getSesongNr()+ " episodeNr: "+episodeToDelete.getEpisodeNr());
+
+        //we already have a method which gets the correct TVserie
+        TVSerie correctSeason = getSingleTVSerie(tvserie);
+
+        correctSeason.deleteEpisodeInSeason(sesongNr,episodeNr);
+
+        //finally we can get episodes from correct so that we can delete exact needed episode
+       // ArrayList<Episode> episodesInSeason = correctSeason.hentEpisoderISesong(sesongNr);
+
+
+
+        //write to json again after episode is deleted so that on application restart the deleted episode is missing.
+        writeToJson(tvSeries,"myjson.json");
+
     }
 
     //oppgave 2.1 read json again
@@ -61,6 +97,20 @@ public class TvSerieJSONRepository implements TvSerieRepository {
         }
     }
 
+    //oppgave 2.1-D - write to json
+    public void writeToJson(ArrayList<TVSerie> series,String filePath){
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File(filePath);
+
+        try{
+            mapper.registerModule(new JavaTimeModule());
+            mapper.writerWithDefaultPrettyPrinter().writeValue(file,series);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     public TVSerie getSingleTVSerie(String tvSerie) {

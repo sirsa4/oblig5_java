@@ -8,12 +8,14 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class TvSerieCSVRepository implements TvSerieRepository {
     //oppgave 2.2-a Tvserie from csv
-    private ArrayList<TVSerie> serieCSV = new ArrayList<>();
-    private HashMap<String, TVSerie> serieHash = new HashMap<>();
+    private ArrayList<TVSerie> serieCSV;
+    LinkedHashMap<String, TVSerie> serieHash = new LinkedHashMap<>();
+  //  private HashMap<String, TVSerie> serieHash = new HashMap<>();
     public TvSerieCSVRepository(String filePath,String splitter){
 
 
@@ -48,6 +50,7 @@ public class TvSerieCSVRepository implements TvSerieRepository {
                 String skuespiller_birthday = values[13];
 
 
+
                 // I struggled to get HashMap to work. So i got help from student and chatGPT that i needed to store TVSerie title in
                 //HashMap
                 //Here in first iteration of loop, the serieHash<title> is null. There is no value in it.
@@ -64,7 +67,7 @@ public class TvSerieCSVRepository implements TvSerieRepository {
                     //add serie object as value to hashmap
                     serieHash.put(title, serie);
                     //add serie object to the ArrayList
-                    serieCSV.add(serie);
+                  //  serieCSV.add(serie);
                   //  System.out.println(title);
                 }
                 //Add episode to serie
@@ -79,8 +82,11 @@ public class TvSerieCSVRepository implements TvSerieRepository {
 
             } // while loop ends here
 
+            serieCSV = new ArrayList<>(serieHash.values());
+            System.out.println(serieHash.keySet());
+
             //oppgave 2.2-C not working well
-         //   writeToCSV(serieCSV,"mycsv.csv");
+         writeToCSV(serieCSV,"mycsv.csv",splitter);
 
         }
         catch (IOException e){
@@ -90,30 +96,29 @@ public class TvSerieCSVRepository implements TvSerieRepository {
 
     } //end of constructor
 
-    /*
-                String epTitle = values[4];
-                String episodeBeskrivelse = values[5];
-                String episodeNr = values[6]; //usikker litt
-                String sesongNr = values[7]; //sesongNr
-                String spilleTid = values[8]; //spilleTid?
-                String episodeDato = values[9];
-                String episodeBildeurl = values[10];
-
-     */
 
     //oppgave 2.2-C: write data from TVSerie ArrayList to csv file
-    public void writeToCSV(ArrayList<TVSerie> series, String filePath){
+    public void writeToCSV(ArrayList<TVSerie> series, String filePath,String split){
+
+        //column split
+       // String split = ";";
+
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
 
+
             for(TVSerie serie : series){
                 //not done - add remaning data
-                writer.write(serie.getTitle()+ ";"+ serie.getBeskrivelse()+";"+ serie.getUtgivelsesdato()+ ";"+serie.getBildeUrl());
                 for(Episode ep : serie.getEpisoder()){
-                    writer.write(ep.getTitle()+";"+ep.getBeskrivelse()+";"+ep.getEpisodeNr()+";"+ep.getSesongNr()+";"+ep.getSpilletid()+";"+ep.getUtgivelsesdato()+";"+ep.getBildeUrl()+";"+ep.getRegissor().getFornavn()+";"+ep.getRegissor().getEtternavn()+";"+ep.getRegissor().getFodselsDato());
+                    writer.write(serie.getTitle()+ split+ serie.getBeskrivelse()+split+ serie.getUtgivelsesdato()+split+serie.getBildeUrl());
+                    writer.write(ep.getTitle()+split+ep.getBeskrivelse()+split+ep.getEpisodeNr()+split+ep.getSesongNr()+split+ep.getSpilletid()+split+ep.getUtgivelsesdato()+split+ep.getBildeUrl()+split+ep.getRegissor().getFornavn()+split+ep.getRegissor().getEtternavn()+split+ep.getRegissor().getFodselsDato());
+                   // System.out.println(serie.getTitle()+ " "+ ep.getTitle());
+                    writer.newLine();
 
                 }
-                writer.newLine();
+
+
+               // System.out.println(count+ " "+ serie.getTitle());
             }
 
 
@@ -121,6 +126,22 @@ public class TvSerieCSVRepository implements TvSerieRepository {
         catch (IOException e){
             e.printStackTrace();
         }
+
+    }
+
+    //oppgave 2.3 - a create, update, delete methods
+    @Override
+    public void createEpisode(String tvserie) {
+
+    }
+
+    @Override
+    public void updateEpisode(String tvserie, int sesongNr, int episodeNr) {
+
+    }
+
+    @Override
+    public void deleteEpisode(String tvserie, int sesongNr, int episodeNr) {
 
     }
 
