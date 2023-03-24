@@ -14,6 +14,7 @@ import java.util.Map;
 public class TvSerieCSVRepository implements TvSerieRepository {
     //oppgave 2.2-a Tvserie from csv
     private ArrayList<TVSerie> serieCSV;
+    //used LinkedHashMap to get guaranteed order of elements in hashmap
     LinkedHashMap<String, TVSerie> serieHash = new LinkedHashMap<>();
   //  private HashMap<String, TVSerie> serieHash = new HashMap<>();
     public TvSerieCSVRepository(String filePath,String splitter){
@@ -110,9 +111,13 @@ public class TvSerieCSVRepository implements TvSerieRepository {
             for(TVSerie serie : series){
                 //not done - add remaning data
                 for(Episode ep : serie.getEpisoder()){
-                    writer.write(serie.getTitle()+ split+ serie.getBeskrivelse()+split+ serie.getUtgivelsesdato()+split+serie.getBildeUrl());
+                    //Tv serie
+                    writer.write(serie.getTitle()+ split+ serie.getBeskrivelse()+split+ serie.getUtgivelsesdato()+split+serie.getBildeUrl()+split);
+
+                    //episode
                     writer.write(ep.getTitle()+split+ep.getBeskrivelse()+split+ep.getEpisodeNr()+split+ep.getSesongNr()+split+ep.getSpilletid()+split+ep.getUtgivelsesdato()+split+ep.getBildeUrl()+split+ep.getRegissor().getFornavn()+split+ep.getRegissor().getEtternavn()+split+ep.getRegissor().getFodselsDato());
-                   // System.out.println(serie.getTitle()+ " "+ ep.getTitle());
+
+                   // new line
                     writer.newLine();
 
                 }

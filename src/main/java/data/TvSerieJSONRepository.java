@@ -36,8 +36,8 @@ public class TvSerieJSONRepository implements TvSerieRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-       // writeToJson(tvSeries,"myjson.json");
+        //this is for quick testing delete, update, create
+       writeToJson(tvSeries,"myjson.json");
 
     }
     //oppgave 2.3 - a create, update, delete methods

@@ -32,8 +32,8 @@ public class Application {
 
         //oppgave 2.1 C
         //tvserie controller uses now the json data repository to get data from from
-        TvSerieJSONRepository jsonData = new TvSerieJSONRepository("tvshows_10.json");
-        TvSerieCSVRepository csvData = new TvSerieCSVRepository("tvshows_10.csv",";");
+        TvSerieJSONRepository jsonData = new TvSerieJSONRepository("myjson.json");
+        TvSerieCSVRepository csvData = new TvSerieCSVRepository("mycsv.csv",";");
 
         TvSerieController controller = new TvSerieController(jsonData);
         app.get("/api/tvserie", new Handler() {
