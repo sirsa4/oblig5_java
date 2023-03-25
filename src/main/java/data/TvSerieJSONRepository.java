@@ -41,8 +41,21 @@ public class TvSerieJSONRepository implements TvSerieRepository {
        writeToJson(tvSeries,"myjson.json");
 
     }
-    //oppgave 2.3 - a create, update, delete methods
+    //oppgave 2.3 delete controller
+    @Override
+    public void deleteEpisode(String tvserie, int sesongNr, int episodeNr) {
 
+        //we already have a method which gets the correct TVserie
+        TVSerie correctTVserie = getSingleTVSerie(tvserie);
+
+        correctTVserie.deleteEpisodeInSeason(sesongNr,episodeNr);
+
+
+        //write to json again after episode is deleted so that on application restart the deleted episode is missing.
+        writeToJson(tvSeries,"myjson.json");
+
+    }
+    //oppgave 2.4 - create a new episode
     @Override
     public void createEpisode(String tvserie, String title, int sesonNr, int episodeNr, String beskrivelse, double spilletid, LocalDate utgivelsesdato, String bildeurl) {
         //same as when deleting an episode, first get correct tv serie
@@ -58,24 +71,22 @@ public class TvSerieJSONRepository implements TvSerieRepository {
 
     }
 
+    //oppgave 2.5 - update data of an already existing episode
     @Override
-    public void updateEpisode(String tvserie, int sesongNr, int episodeNr) {
+    public void updateEpisode(String tvserie, int sesongNr, int episodeNr, String title, int sesongNummer, int episodeNummer, String beskrivelse, double spilletid, LocalDate utgivelsesdato, String bildeurl) {
 
-    }
-
-    @Override
-    public void deleteEpisode(String tvserie, int sesongNr, int episodeNr) {
-
-        //we already have a method which gets the correct TVserie
+        //like when creating episode, we need to know series that episode user wants to update is located inside
         TVSerie correctTVserie = getSingleTVSerie(tvserie);
 
-        correctTVserie.deleteEpisodeInSeason(sesongNr,episodeNr);
+        //then we call a method TVSerie Class which updates the correct episode.
+        //also we need to give the data user have provided
+        correctTVserie.updateEpisode(title,sesongNummer,episodeNummer,beskrivelse,spilletid,utgivelsesdato,bildeurl);
 
-
-        //write to json again after episode is deleted so that on application restart the deleted episode is missing.
+        //lastly rewrite the json file again so that changes made to episode persists in the program
         writeToJson(tvSeries,"myjson.json");
 
     }
+
 
     //oppgave 2.1 read json again
     public ArrayList<TVSerie> readjson(String filePath){

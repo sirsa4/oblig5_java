@@ -91,7 +91,7 @@ public class TVSerie implements Comparable<TVSerie> {
 
 
     }
-    //create and add episode to TVSerie object
+    //oppgave 2.4 - create and add episode to TVSerie object
     public void createAndAddEpisode(String title, int sesonNr, int episodeNr, String beskrivelse, double spilletid, LocalDate utgivelsesdato, String episodeBilde){
 
         //create new episode. This value are form in Vue component which have traveled all the way down to this method.
@@ -99,6 +99,28 @@ public class TVSerie implements Comparable<TVSerie> {
 
         episoder.add(newEpisode);
 
+    }
+
+    //oppgave 2.5 update and change existing episode with new that user wants
+    public void updateEpisode(String title, int sesongNummer, int episodeNummer, String beskrivelse, double spilletid, LocalDate ep_utgivelsesdato, String ep_bildeurl){
+
+        //create new episode with that provided from fornt-end
+        //this episode will replace the old one
+        Episode newEpisode = new Episode(title,episodeNummer,sesongNummer,spilletid,beskrivelse,ep_utgivelsesdato,ep_bildeurl);
+        System.out.println("update at tv series");
+
+        //loop through episodes and update episode from correct season and episode number
+        //I had normal for each loop which never worked. I get fix for below which chatGPT will showed me how replace..
+        //..an element in ArrayList with new one.
+        for(int i=0; i<episoder.size(); i++){
+            //get index of ArrayList
+            Episode episode = episoder.get(i);
+            if(episode.getSesongNr() == sesongNummer && episode.getEpisodeNr() == episodeNummer){
+                //replace element at position of old episode with new one
+                episoder.set(i, newEpisode);
+                break;
+            }
+        }
     }
 
 

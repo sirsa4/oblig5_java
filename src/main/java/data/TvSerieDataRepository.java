@@ -74,7 +74,7 @@ public class TvSerieDataRepository implements TvSerieRepository {
     }
 
     @Override
-    public void updateEpisode(String tvserie, int sesongNr, int episodeNr) {
+    public void updateEpisode(String tvserie, int sesongNr, int episodeNr, String title, int sesongNummer, int episodeNummer, String beskrivelse, double spilletid, LocalDate utgivelsesdato, String bildeurl) {
 
     }
 

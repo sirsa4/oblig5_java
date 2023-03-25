@@ -17,6 +17,16 @@ public class EpisodeController {
         this.episodeRepo = episodeRepo;
     }
 
+    //oppgave 2.3: delete episode from TVserie
+    public void deleteEpisodeController(Context context){
+        String serie = context.pathParam("tvserie-id");
+        int sesong = Integer.parseInt(context.pathParam("sesong-nr"));
+        int episode = Integer.parseInt(context.pathParam("episode-nr"));
+
+        episodeRepo.deleteEpisode(serie,sesong,episode);
+        context.redirect("/tvserie/" + serie + "/sesong/" + sesong);
+    }
+
     //oppgave 2.4: create a new episode
     public void createEpisodeController(Context context){
         //params to get data submitted from form in create episode vue component
@@ -52,14 +62,27 @@ public class EpisodeController {
 
     }
 
-    //oppgave 2.3: delete episode from TVserie
-    public void deleteEpisodeController(Context context){
+    //oppgave 2.5 - update data of an already existing episode
+    public void updateEpisodeController(Context context){
         String serie = context.pathParam("tvserie-id");
         int sesong = Integer.parseInt(context.pathParam("sesong-nr"));
-        int episode = Integer.parseInt(context.pathParam("episode-nr"));
+        int episodeNr = Integer.parseInt(context.pathParam("episode-nr"));
 
-        episodeRepo.deleteEpisode(serie,sesong,episode);
-        context.redirect("/tvserie/" + serie + "/sesong/" + sesong);
+        String title = context.formParam("tittel");
+        int sesongNummer = Integer.parseInt(context.formParam("sesongNummer"));
+        int episodeNummer = Integer.parseInt(context.formParam("episodeNummer"));
+        String beskrivelse = context.formParam("beskrivelse");
+        double spilletid = Double.parseDouble(Objects.requireNonNull(context.formParam("spilletid")));
+        LocalDate utgivelsesdato = LocalDate.parse(context.formParam("utgivelsesdato"));
+        String bildeUrl = context.formParam("bildeUrl");
+
+        //method in json repository would need alot parameters. first ones to get correct episode: first tvserie, then episode
+        //rest of parameters data from inputs in submit form from vue front end for updating episode
+        episodeRepo.updateEpisode(serie,sesong,episodeNr,title,sesongNummer,episodeNummer,beskrivelse,spilletid,utgivelsesdato,bildeUrl);
+
+        //redirect to updated episode page
+        context.redirect("/tvserie/" + serie + "/sesong/" + sesongNummer+"/episode/"+episodeNr);
+
     }
 
     //get all episodes in a given season

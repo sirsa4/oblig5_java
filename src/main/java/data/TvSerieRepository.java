@@ -23,7 +23,7 @@ public interface TvSerieRepository {
 
     //oppgave 2.3 - a - create, update, delete episode methods
     public void createEpisode(String tvserie, String title, int sesonNr, int episodeNr, String beskrivelse, double spilletid, LocalDate utgivelsesdato,String bildeurl);
-    public void updateEpisode(String tvserie, int sesongNr, int episodeNr);
+    public void updateEpisode(String tvserie, int sesongNr, int episodeNr, String title, int sesongNummer, int episodeNummer, String beskrivelse, double spilletid, LocalDate utgivelsesdato, String bildeurl);
     public void deleteEpisode(String tvserie, int sesongNr, int episodeNr);
 
 }//end of interface

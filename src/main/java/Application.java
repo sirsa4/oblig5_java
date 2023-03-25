@@ -84,7 +84,7 @@ public class Application {
 
         //-------------------------Oblig 5 paths------------------------------------------------------------------------
 
-        //delete episode API path
+        //--------------delete episode API path
         app.get("/api/tvserie/{tvserie-id}/sesong/{sesong-nr}/episode/{episode-nr}/deleteepisode", new Handler() {
             @Override
             public void handle(@NotNull Context context) throws Exception {
@@ -95,7 +95,7 @@ public class Application {
             }
         });
 
-        //create episode vue front-end path
+        //----------------create episode vue front-end paths-----------------
         app.get("/tvserie/{tvserie-id}/createepisode", new VueComponent("episode-create"));
 
         //POST for request to create new episode. This uses data sumbitted from episode-create VUE component
@@ -105,6 +105,16 @@ public class Application {
                     episodeController.createEpisodeController(context);
             }
         });
+        //-------------------Update episode API and Vue paths
+        app.get("/tvserie/{tvserie-id}/sesong/{sesong-nr}/episode/{episode-nr}/updateepisode",new VueComponent("episode-update"));
+        //http://localhost:3001/api/tvserie/The%20Last%20of%20Us/sesong/1/episode/9/updateepisode
+        app.post("/api/tvserie/{tvserie-id}/sesong/{sesong-nr}/episode/{episode-nr}/updateepisode", new Handler() {
+            @Override
+            public void handle(@NotNull Context context) throws Exception {
+                    episodeController.updateEpisodeController(context);
+            }
+        });
+
 
     }//end of main method
 }
