@@ -4,8 +4,10 @@ import data.TvSerieRepository;
 import io.javalin.http.Context;
 import model.Episode;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class EpisodeController {
     //oppgave 2.7
@@ -15,7 +17,42 @@ public class EpisodeController {
         this.episodeRepo = episodeRepo;
     }
 
-    //delete episode from TVserie
+    //oppgave 2.4: create a new episode
+    public void createEpisodeController(Context context){
+        //params to get data submitted from form in create episode vue component
+        //names for each value is gotten from episode-create.vue data() method in script tag
+        //anything that is number from url need to parsed like usually since everything in url is strings
+        //order value are is same as they are shown in form from front-end
+        String title = context.formParam("tittel");
+        int sesongNummer = Integer.parseInt(context.formParam("sesongNummer"));
+        int episodeNummer = Integer.parseInt(context.formParam("episodeNummer"));
+        String beskrivelse = context.formParam("beskrivelse");
+        double spilletid = Double.parseDouble(Objects.requireNonNull(context.formParam("spilletid")));
+        LocalDate  utgivelsesdato = LocalDate.parse(context.formParam("utgivelsesdato"));
+        String  bildeUrl = context.formParam("bildeUrl");
+
+        //we also need find correct TVSerie object to add episode to
+        String tvserie = context.pathParam("tvserie-id");
+        /*
+        System.out.println("title: "+title);
+        System.out.println("sesongNr: "+sesongNummer);
+        System.out.println("episodeNummer: "+episodeNummer);
+        System.out.println("beskrivelse: "+beskrivelse);
+        System.out.println("spilletid: "+spilletid);
+        System.out.println("ugivelsedato: "+utgivelsesdato);
+        System.out.println("bilde url: "+bildeUrl);
+
+         */
+        //call method to create an episode in json repository
+        episodeRepo.createEpisode(tvserie,title,sesongNummer,episodeNummer,beskrivelse,spilletid,utgivelsesdato,bildeUrl);
+
+        //finally redirect to correct tv serie page in front-end so that user can add episode
+        context.redirect("/tvserie/" + tvserie + "/sesong/" + sesongNummer);
+
+
+    }
+
+    //oppgave 2.3: delete episode from TVserie
     public void deleteEpisodeController(Context context){
         String serie = context.pathParam("tvserie-id");
         int sesong = Integer.parseInt(context.pathParam("sesong-nr"));

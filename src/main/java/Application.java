@@ -33,9 +33,10 @@ public class Application {
         //oppgave 2.1 C
         //tvserie controller uses now the json data repository to get data from from
         TvSerieJSONRepository jsonData = new TvSerieJSONRepository("myjson.json");
+
         TvSerieCSVRepository csvData = new TvSerieCSVRepository("mycsv.csv",";");
 
-        TvSerieController controller = new TvSerieController(jsonData);
+        TvSerieController controller = new TvSerieController(csvData);
         app.get("/api/tvserie", new Handler() {
             @Override
             public void handle(@NotNull Context context) throws Exception {
@@ -81,6 +82,7 @@ public class Application {
         //This path uses the API path above this.
         app.get("tvserie/{tvserie-id}/sesong/{sesong-nr}/episode/{episode-nr}", new VueComponent("episode-detail"));
 
+        //-------------------------Oblig 5 paths------------------------------------------------------------------------
 
         //delete episode API path
         app.get("/api/tvserie/{tvserie-id}/sesong/{sesong-nr}/episode/{episode-nr}/deleteepisode", new Handler() {
@@ -96,7 +98,13 @@ public class Application {
         //create episode vue front-end path
         app.get("/tvserie/{tvserie-id}/createepisode", new VueComponent("episode-create"));
 
-
+        //POST for request to create new episode. This uses data sumbitted from episode-create VUE component
+        app.post("/api/tvserie/{tvserie-id}/createepisode", new Handler() {
+            @Override
+            public void handle(@NotNull Context context) throws Exception {
+                    episodeController.createEpisodeController(context);
+            }
+        });
 
     }//end of main method
 }

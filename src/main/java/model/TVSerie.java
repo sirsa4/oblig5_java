@@ -75,7 +75,6 @@ public class TVSerie implements Comparable<TVSerie> {
 
          */
 
-
         //option 1: collection removeIf()
        // episoder.removeIf(episode -> episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr);
 
@@ -85,11 +84,20 @@ public class TVSerie implements Comparable<TVSerie> {
         while (iterator.hasNext()) {
             Episode episode = iterator.next();
             if (episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr) {
-                iterator.remove();
+                episoder.remove(episode);
             }
         }
 
 
+
+    }
+    //create and add episode to TVSerie object
+    public void createAndAddEpisode(String title, int sesonNr, int episodeNr, String beskrivelse, double spilletid, LocalDate utgivelsesdato, String episodeBilde){
+
+        //create new episode. This value are form in Vue component which have traveled all the way down to this method.
+        Episode newEpisode = new Episode(title,episodeNr,sesonNr,spilletid,beskrivelse,utgivelsesdato,episodeBilde);
+
+        episoder.add(newEpisode);
 
     }
 

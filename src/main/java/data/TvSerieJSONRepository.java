@@ -7,6 +7,7 @@ import model.TVSerie;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,8 +42,19 @@ public class TvSerieJSONRepository implements TvSerieRepository {
 
     }
     //oppgave 2.3 - a create, update, delete methods
+
     @Override
-    public void createEpisode(String tvserie) {
+    public void createEpisode(String tvserie, String title, int sesonNr, int episodeNr, String beskrivelse, double spilletid, LocalDate utgivelsesdato, String bildeurl) {
+        //same as when deleting an episode, first get correct tv serie
+        TVSerie correctTVserie = getSingleTVSerie(tvserie);
+
+        //then call method in TVserie class which creates and adds an episode to Tvserie
+        //reason method is located at TVSerie is class is because the episode is being added a TV series object
+        correctTVserie.createAndAddEpisode(title,sesonNr,episodeNr,beskrivelse,spilletid,utgivelsesdato,bildeurl);
+
+        //when a new episode is created, rewrite the json file to include the newly created episode
+        //this is so that when application restarts, the new episode persists in the episode list
+        writeToJson(tvSeries,"myjson.json");
 
     }
 
@@ -54,20 +66,10 @@ public class TvSerieJSONRepository implements TvSerieRepository {
     @Override
     public void deleteEpisode(String tvserie, int sesongNr, int episodeNr) {
 
-        //We already have from before a method which gets correct episode from tvserie in the correct season number
-        //to delete this episode, we need to get correct TVserie object and then correct season in episodes
-       Episode episodeToDelete = getEpisodeInSeason(tvserie,sesongNr,episodeNr);
-
-        System.out.println(episodeToDelete.getTitle() + ": sesong: "+ episodeToDelete.getSesongNr()+ " episodeNr: "+episodeToDelete.getEpisodeNr());
-
         //we already have a method which gets the correct TVserie
-        TVSerie correctSeason = getSingleTVSerie(tvserie);
+        TVSerie correctTVserie = getSingleTVSerie(tvserie);
 
-        correctSeason.deleteEpisodeInSeason(sesongNr,episodeNr);
-
-        //finally we can get episodes from correct so that we can delete exact needed episode
-       // ArrayList<Episode> episodesInSeason = correctSeason.hentEpisoderISesong(sesongNr);
-
+        correctTVserie.deleteEpisodeInSeason(sesongNr,episodeNr);
 
 
         //write to json again after episode is deleted so that on application restart the deleted episode is missing.

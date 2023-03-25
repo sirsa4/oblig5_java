@@ -135,8 +135,10 @@ public class TvSerieCSVRepository implements TvSerieRepository {
     }
 
     //oppgave 2.3 - a create, update, delete methods
+
+
     @Override
-    public void createEpisode(String tvserie) {
+    public void createEpisode(String tvserie, String title, int sesonNr, int episodeNr, String beskrivelse, double spilletid, LocalDate utgivelsesdato, String bildeurl) {
 
     }
 
