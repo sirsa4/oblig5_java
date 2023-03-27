@@ -79,14 +79,8 @@ public class TVSerie implements Comparable<TVSerie> {
        // episoder.removeIf(episode -> episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr);
 
         //option 2: iterator interface. This look more understandable compared to option 1. So i picked this in the end.
-        Iterator<Episode> iterator = episoder.iterator();
 
-        while (iterator.hasNext()) {
-            Episode episode = iterator.next();
-            if (episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr) {
-                episoder.remove(episode);
-            }
-        }
+        episoder.removeIf(episode -> episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr);
 
 
 

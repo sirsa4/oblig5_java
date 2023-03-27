@@ -36,7 +36,7 @@ public class Application {
 
         TvSerieCSVRepository csvData = new TvSerieCSVRepository("mycsv.csv",";");
 
-        TvSerieController controller = new TvSerieController(csvData);
+        TvSerieController controller = new TvSerieController(jsonData);
         app.get("/api/tvserie", new Handler() {
             @Override
             public void handle(@NotNull Context context) throws Exception {
@@ -112,8 +112,12 @@ public class Application {
             @Override
             public void handle(@NotNull Context context) throws Exception {
                     episodeController.updateEpisodeController(context);
+                System.out.println(Thread.currentThread().getName());
             }
         });
+
+
+
 
 
     }//end of main method

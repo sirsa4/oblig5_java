@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TvSerieJSONRepository implements TvSerieRepository {
+public class TvSerieJSONRepository implements TvSerieRepository{
     private ArrayList<TVSerie> tvSeries;
     public TvSerieJSONRepository(String filePath) {
 
@@ -41,6 +41,52 @@ public class TvSerieJSONRepository implements TvSerieRepository {
        writeToJson(tvSeries,"myjson.json");
 
     }
+
+    //oppgave 2.1 read json again
+    public ArrayList<TVSerie> readjson(String filePath){
+        ObjectMapper mapper = new ObjectMapper();
+
+        //filePath
+        File path = new File(filePath);
+
+        //module to be able to read LocalDate object correctly. This is needed in order to be able get LocalDate
+        mapper.registerModule(new JavaTimeModule());
+
+        //read tvseries from json filej
+        try {
+            TVSerie[] seriesFromJson = mapper.readValue(path,TVSerie[].class);
+
+            //  ArrayList<TVSerie> serieArrayList = new ArrayList<>(Arrays.asList(seriesFromJson));
+            return new ArrayList<>(Arrays.asList(seriesFromJson));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //oppgave 2.1-D - write to json AND oppgave 2.6
+    public void writeToJson(ArrayList<TVSerie> series,String filePath){
+        Thread jsonWriteThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ObjectMapper mapper = new ObjectMapper();
+                File file = new File(filePath);
+
+                try{
+                    mapper.registerModule(new JavaTimeModule());
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(file,series);
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        System.out.println("Delete thread: "+jsonWriteThread.getName());
+
+    }
+
+
     //oppgave 2.3 delete controller
     @Override
     public void deleteEpisode(String tvserie, int sesongNr, int episodeNr) {
@@ -52,7 +98,8 @@ public class TvSerieJSONRepository implements TvSerieRepository {
 
 
         //write to json again after episode is deleted so that on application restart the deleted episode is missing.
-        writeToJson(tvSeries,"myjson.json");
+      //  writeToJson(tvSeries,"myjson.json");
+
 
     }
     //oppgave 2.4 - create a new episode
@@ -87,43 +134,6 @@ public class TvSerieJSONRepository implements TvSerieRepository {
 
     }
 
-
-    //oppgave 2.1 read json again
-    public ArrayList<TVSerie> readjson(String filePath){
-        ObjectMapper mapper = new ObjectMapper();
-
-        //filePath
-        File path = new File(filePath);
-
-        //module to be able to read LocalDate object correctly. This is needed in order to be able get LocalDate
-        mapper.registerModule(new JavaTimeModule());
-
-        //read tvseries from json filej
-        try {
-            TVSerie[] seriesFromJson = mapper.readValue(path,TVSerie[].class);
-
-            //  ArrayList<TVSerie> serieArrayList = new ArrayList<>(Arrays.asList(seriesFromJson));
-            return new ArrayList<>(Arrays.asList(seriesFromJson));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //oppgave 2.1-D - write to json
-    public void writeToJson(ArrayList<TVSerie> series,String filePath){
-        ObjectMapper mapper = new ObjectMapper();
-        File file = new File(filePath);
-
-        try{
-            mapper.registerModule(new JavaTimeModule());
-            mapper.writerWithDefaultPrettyPrinter().writeValue(file,series);
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-
-    }
 
     @Override
     public TVSerie getSingleTVSerie(String tvSerie) {
