@@ -65,15 +65,18 @@ public class TVSerie implements Comparable<TVSerie> {
     public void deleteEpisodeInSeason(int sesongNr, int episodeNr){
         //This loop did not work and I am not sure what the issue
         //but Intellij gave me 2 quick fix options that solved the issue with deleting episode
-        /*
-        for(Episode episode : episoder){
+
+        /*for(Episode episode : episoder){
 
             if(episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr){
                 episoder.remove(episode);
             }
+
         }
 
          */
+
+
 
         //option 1: collection removeIf()
        // episoder.removeIf(episode -> episode.getSesongNr() == sesongNr && episode.getEpisodeNr() == episodeNr);
@@ -109,6 +112,7 @@ public class TVSerie implements Comparable<TVSerie> {
         for(int i=0; i<episoder.size(); i++){
             //get index of ArrayList
             Episode episode = episoder.get(i);
+
             if(episode.getSesongNr() == sesongNummer && episode.getEpisodeNr() == episodeNummer){
                 //replace element at position of old episode with new one
                 episoder.set(i, newEpisode);

@@ -24,6 +24,7 @@ public class EpisodeController {
         int episode = Integer.parseInt(context.pathParam("episode-nr"));
 
         episodeRepo.deleteEpisode(serie,sesong,episode);
+
         context.redirect("/tvserie/" + serie + "/sesong/" + sesong);
     }
 

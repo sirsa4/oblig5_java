@@ -66,6 +66,7 @@ public class TvSerieJSONRepository implements TvSerieRepository{
 
     //oppgave 2.1-D - write to json AND oppgave 2.6
     public void writeToJson(ArrayList<TVSerie> series,String filePath){
+
         Thread jsonWriteThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -82,6 +83,7 @@ public class TvSerieJSONRepository implements TvSerieRepository{
 
             }
         });
+        jsonWriteThread.start();
         System.out.println("Delete thread: "+jsonWriteThread.getName());
 
     }
@@ -98,7 +100,7 @@ public class TvSerieJSONRepository implements TvSerieRepository{
 
 
         //write to json again after episode is deleted so that on application restart the deleted episode is missing.
-      //  writeToJson(tvSeries,"myjson.json");
+       writeToJson(tvSeries,"myjson.json");
 
 
     }
